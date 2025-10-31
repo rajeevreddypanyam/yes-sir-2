@@ -1,4 +1,4 @@
-﻿name: Flutter Web -> Firebase Hosting
+﻿name: Flutter Web → Firebase Hosting (prod)
 
 on:
   push:
@@ -7,10 +7,6 @@ on:
       - "apps/app_flutter/**"
       - "firebase.json"
       - ".firebaserc"
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "apps/app_flutter/**"
 
 jobs:
   build-and-deploy:
@@ -29,18 +25,7 @@ jobs:
           flutter pub get
           flutter build web --release
 
-      - name: Deploy to Firebase Hosting (preview for PRs)
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
-          entryPoint: "./"
-          channelId: pr-${{ github.event.number }}
-
-      - name: Deploy to Firebase Hosting (production on main)
-        if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+      - name: Deploy to Firebase Hosting (production)
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
