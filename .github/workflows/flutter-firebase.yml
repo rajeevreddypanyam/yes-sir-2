@@ -1,12 +1,10 @@
-﻿name: Flutter Web → Firebase Hosting (prod)
+﻿name: Flutter Web -> Firebase Hosting (prod)
 
 on:
+  workflow_dispatch: {}        # allow manual "Run workflow" button
   push:
-    branches: [ main ]
-    paths:
-      - "apps/app_flutter/**"
-      - "firebase.json"
-      - ".firebaserc"
+    branches: [ main ]         # trigger on any push to main
+    # (remove paths filter so any commit triggers a deploy)
 
 jobs:
   build-and-deploy:
