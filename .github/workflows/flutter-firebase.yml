@@ -7,6 +7,12 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  deployments: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -24,7 +30,6 @@ jobs:
           flutter pub get
           flutter build web --release
 
-      # Preview deploy for PRs (unique URL per PR)
       - name: Deploy to Firebase Hosting (preview for PRs)
         if: ${{ github.event_name == 'pull_request' }}
         uses: FirebaseExtended/action-hosting-deploy@v0
@@ -35,7 +40,6 @@ jobs:
           entryPoint: "./"
           channelId: pr-${{ github.event.number }}
 
-      # Production deploy when pushing to main
       - name: Deploy to Firebase Hosting (production)
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: FirebaseExtended/action-hosting-deploy@v0
