@@ -1,10 +1,11 @@
-﻿name: Flutter Web -> Firebase Hosting (prod)
+﻿name: Flutter Web -> Firebase Hosting (prod + previews)
 
 on:
-  workflow_dispatch: {}        # allow manual "Run workflow" button
+  workflow_dispatch: {}
   push:
-    branches: [ main ]         # trigger on any push to main
-    # (remove paths filter so any commit triggers a deploy)
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
@@ -23,7 +24,20 @@ jobs:
           flutter pub get
           flutter build web --release
 
+      # Preview deploy for PRs (unique URL per PR)
+      - name: Deploy to Firebase Hosting (preview for PRs)
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+          entryPoint: "./"
+          channelId: pr-${{ github.event.number }}
+
+      # Production deploy when pushing to main
       - name: Deploy to Firebase Hosting (production)
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
