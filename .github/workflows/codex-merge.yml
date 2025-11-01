@@ -1,0 +1,38 @@
+﻿name: Codex – Approve & Merge
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  approve-and-merge:
+    if: >
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@codex approve')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+
+            // get the PR number from the issue
+            const prNumber = context.payload.issue.number;
+
+            // leave a status comment
+            await github.rest.issues.createComment({
+              owner, repo, issue_number: prNumber,
+              body: "✅ Boss approved. Merging to **main** and triggering live deploy…"
+            });
+
+            // merge with squash
+            await github.rest.pulls.merge({
+              owner, repo, pull_number: prNumber,
+              merge_method: "squash"
+            });
