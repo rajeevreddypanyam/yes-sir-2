@@ -1,55 +1,87 @@
 # YES SIR Project Overview
 
-## 🌟 Vision
-"YES SIR" is a comprehensive web application designed to streamline employee management by integrating attendance tracking, geofencing, task management, and AI-powered assistance. Its core vision is to provide a robust, intuitive, and efficient platform for organizations to manage their workforce effectively.
+## 🌍 Vision
+"YES SIR" is a cross-platform mobile application that empowers organizations to
+manage distributed teams through a single, intelligent field-operations hub.
+Built with Flutter for Android and iOS, the app blends location-aware attendance
+tracking, task execution, and AI-assisted workflows so leaders and employees can
+collaborate in real time wherever work happens.
 
-## ✨ Core Features
+## ✨ Core Experiences
 
-### Employee Portal
-*   **Secure Authentication**: Email/password and Google OAuth login options.
-*   **Real-time Attendance**: GPS-based check-in/check-out with location tracking.
-*   **Geofence Monitoring**: Automatic notifications for location boundary crossings.
-*   **Task Management**: Personal task dashboard with priority levels and due dates.
-*   **My Day Timeline**: Detailed daily activity tracking with movement analysis.
-*   **Attendance History**: Historical view with calendar interface and export options.
-*   **AI Chat Assistant**: Intelligent assistant for leave requests and queries.
-*   **User Settings**: Profile management and notification preferences.
+### Employee App
+- **Unified Sign-In**: Email/password and Google sign-in backed by Firebase
+  Authentication with enforced device security policies.
+- **Smart Attendance**: GPS check-in/check-out, automatic session tracking, and
+  override requests directly from the phone.
+- **Geofence Insights**: On-device geofence detection, background reminders, and
+  historical movement visualizations.
+- **Task Command Center**: Prioritized job list with attachments, proof-of-work
+  capture, and offline progress syncing.
+- **My Day Timeline**: Map-based view of routes, dwell time, and visit notes for
+  compliance reporting.
+- **Leave & Holidays**: Submit requests, view approvals, and access shared
+  calendars.
+- **YES SIR Assistant**: Conversational support for HR questions, policy
+  lookups, and automated actions like submitting timesheets.
+- **Personal Settings**: Notification preferences, privacy controls, and device
+  diagnostics.
 
-### Admin Portal
-*   **Organization Management**: Complete setup and configuration for new organizations.
-*   **User Administration**: Create, edit, delete users with bulk operations.
-*   **Team Management**: Organize employees into teams with location assignments.
-*   **Location Management**: Define office locations and client sites.
-*   **Geofence Control**: Create circular and polygon geofences for area monitoring.
-*   **Holidays Management**: Define organization-wide or team-specific holidays.
-*   **Leave Request Management**: Review, approve, or reject employee leave requests.
-*   **Advanced Reports**: Detailed attendance reports and timeline analysis.
-*   **AI Assistant**: Administrative tasks automation (user creation, leave approvals).
-*   **System Settings**: Organization-wide configuration options.
+### Admin & Team Lead Toolkit
+- **Organization Onboarding**: Guided workflow to create companies, invite
+  admins, and provision Firebase security rules.
+- **User Administration**: Manage members, enforce multi-role access (Org Admin,
+  Team Admin, Employee), and trigger password resets.
+- **Team & Shift Planning**: Configure reporting lines, shift templates, and
+  overtime rules.
+- **Location & Geofence Management**: Define offices, client sites, and polygon
+  fences with background sync to mobile devices.
+- **Holiday & Leave Governance**: Publish calendars, approve requests, and push
+  notifications to impacted staff.
+- **Live Operations Dashboard**: Monitor active check-ins, exception alerts, and
+  device health signals.
+- **Analytics & Exports**: Generate attendance summaries, route proofs, and
+  compliance-ready CSVs.
+- **AI Copilot**: Automate onboarding steps, generate weekly recaps, and respond
+  to policy questions using secure AI integrations.
 
-## 🏗️ Technical Stack
+## 🏗️ Technical Foundation
 
-### Frontend
-*   **React 18**: For building dynamic user interfaces.
-*   **TypeScript**: For type-safe development.
-*   **Tailwind CSS**: For utility-first styling and responsive design.
-*   **Vite**: For fast development and optimized builds.
-*   **React Router**: For client-side routing.
-*   **Lucide React**: For consistent iconography.
+### Mobile Client
+- **Flutter 3** with Material 3 design language and responsive layouts tailored
+  for mobile form factors.
+- **Provider** state management and modular feature packages for scalability.
+- **Platform Channels** prepared for background geofencing, location streaming,
+  and push notification handling.
 
-### Backend
-*   **Hono**: A lightweight web framework for Cloudflare Workers.
-*   **Cloudflare D1**: SQLite database for persistent storage.
-*   **Cloudflare Workers**: Serverless compute for API endpoints.
+### Firebase Backend
+- **Firebase Authentication** for secure identity (email/password, Google, and
+  device tokens).
+- **Cloud Firestore** for real-time multi-tenant data with offline persistence.
+- **Cloud Functions** for server-side orchestration (attendance validation,
+  report generation, AI assistant bridging).
+- **Cloud Storage** for task evidence, route exports, and profile images.
+- **Firebase Cloud Messaging** for critical alerts and reminders.
+- **App Check & Security Rules** enforcing organization-level isolation and
+  least-privilege access.
 
-### Authentication & APIs
-*   **Mocha Users Service**: For OAuth and session management (Google OAuth supported).
-*   **Google Maps Platform**: (Maps, Geocoding, Timezone APIs) for location-based features.
-*   **OpenAI GPT-4**: For AI assistant functionality.
-*   **ZeptoMail**: For transactional email delivery.
+### Integrations & Intelligence
+- **Google Maps Platform** for reverse geocoding, map tiles, and route
+  visualizations.
+- **OpenAI or Vertex AI** connectors for conversational workflows (proxied via
+  Cloud Functions with audit logging).
+- **Third-Party HRIS/Payroll** webhooks designed through Cloud Functions for
+  downstream synchronization.
 
-## 🚀 Deployment
-The application is designed for optimized deployment on Cloudflare's edge network, leveraging Cloudflare Workers, D1, and Pages for a globally performant and scalable solution.
+## 🚀 Deployment Strategy
+- CI/CD pipelines deliver signed Android App Bundles and iOS IPAs.
+- Firebase App Distribution for internal testing, then Google Play Console and
+  Apple App Store releases.
+- Remote configuration toggles new functionality without requiring app updates.
 
-## 🔒 Security
-Focuses on secure authentication (OAuth, bcrypt hashing), role-based access control, and data protection practices.
+## 🔒 Security & Compliance
+- Fine-grained Firebase security rules per organization and role.
+- Enforced multi-factor authentication for admins and device integrity checks
+  (App Check, SafetyNet/DeviceCheck).
+- Auditable logs for admin actions, AI requests, and location overrides.
+- GDPR-ready data retention policies with export/delete tooling.
