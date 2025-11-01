@@ -1,0 +1,10 @@
+﻿{
+  "name": "yes-sir-automation",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@octokit/rest": "^20.1.1",
+    "openai": "^4.58.0",
+    "firebase-tools": "^13.9.1"
+  }
+}
