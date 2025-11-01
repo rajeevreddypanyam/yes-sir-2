@@ -1,0 +1,42 @@
+﻿name: Codex Vision & Discussion Automation
+
+on:
+  issue_comment:
+    types: [created, edited]
+  issues:
+    types: [opened, edited, reopened]
+  pull_request_review_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  handle-comments:
+    runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, '@codex') || contains(github.event.issue.body, '@codex')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install @octokit/rest openai node-fetch
+
+      - name: Run Codex Handler
+        if: ${{ github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment' }}
+        run: node .github/scripts/codex-handler.js
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Codex Issue Processor
+        if: ${{ github.event_name == 'issues' }}
+        run: node .github/scripts/codex-issue.js
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
